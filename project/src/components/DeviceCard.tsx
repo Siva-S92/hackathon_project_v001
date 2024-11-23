@@ -10,21 +10,21 @@ interface DeviceCardProps {
 
 const actionDeviceID = {
   devices: [
-    { deviceID: "777209ea-17f1-4fb6-a604-078112910feb", action: "start" },
+    { deviceID: "47d32e23-65d5-470a-af4e-2a2ea211e06b", action: "start" },
   ],
 };
 const stopDeviceID = {
   devices: [
-    { deviceID: "777209ea-17f1-4fb6-a604-078112910feb", action: "stop" },
+    { deviceID: "47d32e23-65d5-470a-af4e-2a2ea211e06b", action: "stop" },
   ],
 };
 // to Device Start
 const makeDeviseStart = async () => {
   try {
     const response = await axios.post(
-      `https://eureka.innotrat.in/product/6905855f-f441-48de-9ca4-103e535cfab8/devices/control`, actionDeviceID
+      `/api/start-device`, actionDeviceID
     );
-    message.success(response.data.messsage, 5)
+    message.success(`${response.data.message},action: ${response.data.updatedDevices[0].action}`)
   } catch (error) {
     console.log(error)
   }
@@ -34,9 +34,9 @@ const makeDeviseStart = async () => {
 const makeDeviseStop = async () => {
   try {
     const response = await axios.post(
-      `https://eureka.innotrat.in/product/6905855f-f441-48de-9ca4-103e535cfab8/devices/control`, stopDeviceID
+      `/api/stop-device`, stopDeviceID
     );
-    message.success(response.data.messsage, 5)
+    message.success(`${response.data.message},action: ${response.data.updatedDevices[0].action}`)
   } catch (error) {
     console.log(error)
   }
@@ -54,7 +54,10 @@ export default function DeviceCard({ isOn, onToggle }: DeviceCardProps) {
 
       <div className="flex gap-4 justify-center">
         <button
-          onClick={() => !isOn && onToggle()}
+          onClick={() => {
+            !isOn && onToggle()
+            makeDeviseStart()
+          }}
           className={`px-6 py-2 rounded-lg font-medium transition-colors
             ${
               isOn
@@ -65,7 +68,10 @@ export default function DeviceCard({ isOn, onToggle }: DeviceCardProps) {
           ON
         </button>
         <button
-          onClick={() => isOn && onToggle()}
+          onClick={() => {
+            isOn && onToggle()
+            makeDeviseStop()
+          }}
           className={`px-6 py-2 rounded-lg font-medium transition-colors
             ${
               !isOn

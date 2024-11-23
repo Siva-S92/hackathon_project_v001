@@ -75,7 +75,7 @@ const ProductCard: React.FC = () => {
 
   useEffect(() => {
     fetchProductDefinition();
-  }, [productdefinition]);
+  }, []);
 
   return (
     <>
