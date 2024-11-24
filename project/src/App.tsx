@@ -1,14 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Settings, Bell, X, Droplet, Sun, Gauge, Power } from 'lucide-react';
 import StatusCard from './components/StatusCard';
 import DeviceCard from './components/DeviceCard';
 import ProductCard from './components/ProductCard';
+import axios from 'axios';
 
 function App() {
   const [moistureLevel, setMoistureLevel] = useState(75);
   const [sunlightLevel, setSunlightLevel] = useState(40);
   const [fertilizerLevel, setFertilizerLevel] = useState(70);
   const [isDeviceOn, setIsDeviceOn] = useState(false);
+
+  const checkDeviceRunningStatus = async() => {
+    let data = {productID: "61630893-6873-456c-bc38-b9d7eb7bcedb"}
+    try {
+      const response = await axios.post(`/api/check-running`, data)
+      console.log(response.data)
+      if(parseInt(response.data.runningDevicesCount) > 0){
+        setIsDeviceOn(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    checkDeviceRunningStatus()
+  }, [])
 
   const adjustValue = (value: number, delta: number): number => {
     const newValue = value + delta;
