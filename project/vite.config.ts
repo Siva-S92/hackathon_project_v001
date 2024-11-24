@@ -11,9 +11,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000', // URL of your Express backend
+        target: 'https://hackathon-project-v001-backend.vercel.app',  // http://localhost:5000  // URL of your Express backend
         changeOrigin: true,             // Change the origin of the host header to match the target
-        // secure: false,                  // Use only if the backend uses HTTPS
+        secure: false,                  // Use only if the backend uses HTTPS
       },
     },
   },
